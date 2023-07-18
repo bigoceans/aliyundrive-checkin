@@ -1,8 +1,9 @@
 name: aliyundrive-checkin
 on:
   schedule:
-  - cron: 0 16 * * * 
+    - cron: '0 0-1 * * *'
   workflow_dispatch:
+  
 jobs:
   build:
     runs-on: windows-latest
@@ -20,15 +21,15 @@ jobs:
           WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
           BARK_DEVICEKEY: ${{ secrets.BARK_DEVICEKEY }}
       - uses: gautamkrishnar/keepalive-workflow@master
-      - name: Append Success Log #追加成功日志
+      - name: Append Success Log
         run: |
-          echo "$(date '+%Y-%m-%d %H:%M:%S') - 签到成功" >> run.log
-      - name: Upload log #上传日志
+          echo "$(date +'%Y-%m-%d %H:%M:%S') - 签到成功" >> run.log
+      - name: Upload log
         uses: actions/upload-artifact@v2
         with:
           name: logs
           path: run.log
-      - name: Push log #更新日志
+      - name: Push log
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: auto-checkin
